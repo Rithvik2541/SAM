@@ -13,7 +13,7 @@ function Leave() {
     console.log('Form Data:', data);
 
     try {
-      const res = await axios.post('http://localhost:4000/student-app/leave', data);
+      const res = await axios.post('https://studentattendancemanagement.onrender.com/student-app/leave', data);
       if (res.data.message === 'leave posted') {
         toast.success("leave sent")
         console.log("Letter Submitted");

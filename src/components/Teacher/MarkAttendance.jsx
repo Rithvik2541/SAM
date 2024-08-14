@@ -10,7 +10,7 @@ const MarkAttendance = () => {
   const [selectedBranch, setSelectedBranch] = useState('CSE');
 
   useEffect(() => {
-    axios.get('http://localhost:4000/teacher-app/allstudents')
+    axios.get('https://studentattendancemanagement.onrender.com/teacher-app/allstudents')
       .then(response => {
         setStudents(response.data.payload);
         setFilteredStudents(response.data.payload.filter(student => student.course === selectedBranch));
@@ -45,7 +45,7 @@ const MarkAttendance = () => {
     }));
 
     try {
-      const response = await axios.post('http://localhost:4000/teacher-app/markAttendance', attendanceData);
+      const response = await axios.post('https://studentattendancemanagement.onrender.com/teacher-app/markAttendance', attendanceData);
       if (response.data.message === 'attendance marked') {
         toast.success('Attendance Marked', { position: 'top-center', duration: 5000 });
       } else {

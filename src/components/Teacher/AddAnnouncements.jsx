@@ -15,7 +15,7 @@ function AddAnnouncement() {
   });
 
   async function pageRendered() {
-    const response = await axios.get('http://localhost:4000/student-app/announcements');
+    const response = await axios.get('https://studentattendancemanagement.onrender.com/student-app/announcements');
     const info = response.data.payload;
     setAnnouncements(info);
   }
@@ -41,7 +41,7 @@ function AddAnnouncement() {
     const newAnnouncements = [...announcements, formData];
     setAnnouncements(newAnnouncements);
     console.log(formData);
-    let res = await axios.post('http://localhost:4000/teacher-app/announcements', formData);
+    let res = await axios.post('https://studentattendancemanagement.onrender.com/teacher-app/announcements', formData);
     if (res.data.message === 'announcement added') {
       toast.success("announcement added");
     }

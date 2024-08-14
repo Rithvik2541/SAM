@@ -10,7 +10,7 @@ function StudentDetails() {
   const [students, setStudents] = useState([]);
 
   async function pageRendered(){
-    let res = await axios.get('http://localhost:4000/admin-app/student-details');
+    let res = await axios.get('https://studentattendancemanagement.onrender.com/admin-app/student-details');
     if(res.data.message === 'deatils fetched')
     setStudents(res.data.payload);
     else{
@@ -30,7 +30,7 @@ function StudentDetails() {
 
   const handleRemoveStudent = async (id) => {
     try {
-      let res = await axios.delete(`http://localhost:4000/admin-app/student-delete/${id}`);
+      let res = await axios.delete(`https://studentattendancemanagement.onrender.com/admin-app/student-delete/${id}`);
       if (res.data.message === 'Deleted Successfully') {
         toast.success('Deleted successfully');
         pageRendered();

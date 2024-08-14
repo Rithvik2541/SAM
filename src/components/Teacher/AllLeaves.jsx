@@ -14,7 +14,7 @@ function AllLeave() {
 
   const fetchLeaveRequests = async () => {
     try{
-      let res = await axios.get("http://localhost:4000/teacher-app/all-leaves");
+      let res = await axios.get("https://studentattendancemanagement.onrender.com/teacher-app/all-leaves");
       if(res.data.message === 'leaves fetched'){
         console.log("leaves fetched");
         setLeaves(res.data.payload);
@@ -29,7 +29,7 @@ function AllLeave() {
 
   const handleApprove = async(userId) => {
     let approval = "approved";
-    let res = await axios.put('http://localhost:4000/teacher-app/approveLeave', {userId, approval});
+    let res = await axios.put('https://studentattendancemanagement.onrender.com/teacher-app/approveLeave', {userId, approval});
     if(res.data.message === 'leave updated'){
       toast.success("leave approved")
     }else{
@@ -39,7 +39,7 @@ function AllLeave() {
 
   const handleReject = async(userId) => {
     let approval = "rejected";
-    let res = await axios.put('http://localhost:4000/teacher-app/approveLeave', {userId, approval});
+    let res = await axios.put('https://studentattendancemanagement.onrender.com/teacher-app/approveLeave', {userId, approval});
     if(res.data.message === 'leave updated'){
       toast.success("leave rejected")
     }else{

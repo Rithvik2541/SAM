@@ -9,7 +9,7 @@ const ResetPassword = () => {
 
   const onSubmit = async(data) => {
     console.log(data);
-    let res = await axios.put('http://localhost:4000/admin-app/reset-password', data); 
+    let res = await axios.put('https://studentattendancemanagement.onrender.com/admin-app/reset-password', data); 
     if(res.data.message === 'password changed'){
       toast.success("Password Changed");
       console.log("Password Changed Successfuly")

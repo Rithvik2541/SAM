@@ -11,7 +11,7 @@ function TeacherDetails() {
 
 
   async function pageRendered(){
-    let res = await axios.get('http://localhost:4000/admin-app/teacher-details');
+    let res = await axios.get('https://studentattendancemanagement.onrender.com/admin-app/teacher-details');
     if(res.data.message === 'deatils fetched')
     setTeachers(res.data.payload);
     else{
@@ -29,7 +29,7 @@ function TeacherDetails() {
 
   const handleRemoveTeacher = async (id) => {
     try {
-      let res = await axios.delete(`http://localhost:4000/admin-app/teacher-delete/${id}`);
+      let res = await axios.delete(`https://studentattendancemanagement.onrender.com/admin-app/teacher-delete/${id}`);
       if (res.data.message === 'Deleted Successfully') {
         toast.success('Deleted Successfully');
         pageRendered(); 

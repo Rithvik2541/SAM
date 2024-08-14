@@ -17,7 +17,7 @@ function AddHolidays() {
   });
 
   async function pageRendered() {
-    const response = await axios.get('http://localhost:4000/student-app/holidays');
+    const response = await axios.get('https://studentattendancemanagement.onrender.com/student-app/holidays');
     const info = response.data.payload;
     setHolidays(info);
   }
@@ -43,7 +43,7 @@ function AddHolidays() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     console.log(formData);
-    let res = await axios.post('http://localhost:4000/admin-app/holidays', formData);
+    let res = await axios.post('https://studentattendancemanagement.onrender.com/admin-app/holidays', formData);
     if(res.data.message === 'holiday added'){
       toast.success("holiday added");
     }

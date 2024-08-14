@@ -13,7 +13,7 @@ function AddTeacher() {
     data.password = data.userId; // Setting password as userId for this example
 
     try {
-      const res = await axios.post('http://localhost:4000/admin-app/teacher-registration', data);
+      const res = await axios.post('https://studentattendancemanagement.onrender.com/admin-app/teacher-registration', data);
       if (res.data.message === "user exists") {
         toast.warning("Teacher exists");
       } else if (res.data.message === "user added") {

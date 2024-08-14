@@ -16,7 +16,7 @@ function ViewAttendance() {
   let [id] = useContext(CounterContext);
   useEffect(() => {
     // Fetch the attendance percentage
-    axios.get(`http://localhost:4000/student-app/attendance/${id}`)
+    axios.get(`https://studentattendancemanagement.onrender.com/student-app/attendance/${id}`)
       .then(response => {
         const attendanceData = response.data;
         setValue(attendanceData.percentage);
@@ -29,7 +29,7 @@ function ViewAttendance() {
     // Fetch the required classes to attend
     async function fetchClassesRequired() {
       try {
-        const res = await axios.get(`http://localhost:4000/student-app/attendanceReq/${id}`);
+        const res = await axios.get(`https://studentattendancemanagement.onrender.com/student-app/attendanceReq/${id}`);
         setClassesToAttend(res.data.message);
       } catch (error) {
         console.error('There was an error fetching the required classes!', error);

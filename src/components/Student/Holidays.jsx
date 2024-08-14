@@ -21,7 +21,7 @@ function Holidays() {
   }, [])
 
   async function renderHolidays(){
-    let res = await axios.get('http://localhost:4000/student-app/holidays');
+    let res = await axios.get('https://studentattendancemanagement.onrender.com/student-app/holidays');
     console.log(res.data.payload);
     setHolidays(res.data.payload);
   }

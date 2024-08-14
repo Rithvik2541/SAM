@@ -8,7 +8,7 @@ const Below75 = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get('http://localhost:4000/teacher-app/75below');
+        const res = await axios.get('https://studentattendancemanagement.onrender.com/teacher-app/75below');
         setStudents(res.data.payload);
       } catch (error) {
         console.error("Error fetching students data", error);
@@ -19,7 +19,7 @@ const Below75 = () => {
 
   const handleSendEmail = async (email, userId, percentage) => {
     try {
-      const res = await axios.post('http://localhost:4000/teacher-app/send-mail', { email, userId, percentage });
+      const res = await axios.post('https://studentattendancemanagement.onrender.com/teacher-app/send-mail', { email, userId, percentage });
       if (res.data.message === 'email sent') {
         toast.success('Email sent', { duration: 1000 });
       } else {
@@ -33,7 +33,7 @@ const Below75 = () => {
 
   const selectAll = async () => {
     try {
-      const res = await axios.post('http://localhost:4000/teacher-app/mail-to-all', students);
+      const res = await axios.post('https://studentattendancemanagement.onrender.com/teacher-app/mail-to-all', students);
       console.log("Mail sent to all", res);
     } catch (error) {
       console.error("Error sending mail to all", error);
