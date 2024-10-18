@@ -6,16 +6,21 @@ import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import SpeedIcon from '@mui/icons-material/Speed';
 import axios from 'axios';
-import './StudentProfile.css';
 import { CounterContext } from '../ContextAPI/CounterContext';
 
 function StudentProfile() {
   const [showMore, setShowMore] = useState(false);
   const [courses, setCourses] = useState([]);
   const location = useLocation();
-  const [id] = useContext(CounterContext);
+  const [id, setId] = useContext(CounterContext);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  console.log(courses)
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const toggleMore = () => {
     setShowMore(!showMore);
   };
@@ -23,7 +28,6 @@ function StudentProfile() {
   useEffect(() => {
     axios.get('/api/courses')
       .then(response => {
-        console.log('API Response:', response.data);
         setCourses(response.data || []);
       })
       .catch(error => {
@@ -38,70 +42,98 @@ function StudentProfile() {
     location.pathname.includes('holidays')
   );
 
+  const sidebarStyle = {
+    backgroundImage: "linear-gradient(to top left, rgb(221, 161, 94), rgb(202, 103, 2))",
+    minHeight: "100vh",
+    width: showMore ? '200px' : '60px',
+    transition: 'width 0.3s ease',
+    position: windowWidth <= 768 ? 'fixed' : 'relative',
+    zIndex: 1000,
+  };
+
+  const contentStyle = {
+    marginLeft: windowWidth <= 768 ? '60px' : showMore ? '200px' : '60px',
+    transition: 'margin-left 0.3s ease',
+    width: '100%',
+    padding: '20px',
+  };
+
+  const navItemStyle = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  };
+
   return (
-    <div className="student-profile d-flex">
-      <div className={`sidebar ${showMore ? 'expanded' : ''}`} style={{ backgroundImage: "linear-gradient(to top left, rgb(221, 161, 94), rgb(202, 103, 2))", height: "120vh", borderRadius: "0%" }}>
-        <div className="d-flex align-items-center fs-4">
-          <ExpandMoreIcon className='fs-2 ms-3 me-2 mt-4' onClick={toggleMore} />
-          {showMore && <span className='mt-3'>More</span>}
+    <div style={{ display: 'flex' }}>
+      <div style={sidebarStyle}>
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', padding: '10px' }}>
+          <ExpandMoreIcon 
+            style={{ fontSize: '32px', marginRight: '10px', cursor: 'pointer' }} 
+            onClick={toggleMore} 
+          />
+          {showMore && <span>More</span>}
         </div>
-        <ul className='nav flex-column'>
-          <li className="nav-item">
-            <NavLink 
-              to="attendance" 
-              className={({ isActive }) => `nav-link d-flex align-items-center fs-4 text-dark ${isActive ? 'active' : ''}`}
-            >
-              <SpeedIcon className='me-3 fs-2' />
-              {showMore && <span>Attendance</span>}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink 
-              to="announcements" 
-              className={({ isActive }) => `nav-link d-flex align-items-center fs-4 text-dark ${isActive ? 'active' : ''}`}
-            >
-              <CampaignIcon className='me-3 fs-2' />
-              {showMore && <span>Announcements</span>}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink 
-              to="holidays" 
-              className={({ isActive }) => `nav-link d-flex align-items-center fs-4 text-dark ${isActive ? 'active' : ''}`}
-            >
-              <EventNoteIcon className='fs-2 me-3' />
-              {showMore && <span>Holidays</span>}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink 
-              to="request-leave" 
-              className={({ isActive }) => `nav-link d-flex align-items-center fs-4 text-dark ${isActive ? 'active' : ''}`}
-            >
-              <HistoryEduIcon className='fs-2 me-3' />
-              {showMore && <span>Request Leave</span>}
-            </NavLink>
-          </li>
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {['attendance', 'announcements', 'holidays', 'request-leave'].map((item, index) => {
+            const icons = [SpeedIcon, CampaignIcon, EventNoteIcon, HistoryEduIcon];
+            const Icon = icons[index];
+            return (
+              <li key={item} style={navItemStyle}>
+                <NavLink 
+                  to={item}
+                  style={({ isActive }) => ({
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '10px',
+                    color: 'black',
+                    textDecoration: 'none',
+                    backgroundColor: isActive ? 'rgba(0,0,0,0.1)' : 'transparent',
+                  })}
+                >
+                  <Icon style={{ fontSize: '24px', marginRight: '10px' }} />
+                  {showMore && <span style={{ textTransform: 'capitalize' }}>{item.replace('-', ' ')}</span>}
+                </NavLink>
+              </li>
+            );
+          })}
         </ul>
       </div>
-      <div className="profile-content w-100">
-        <h2 className='ms-5 mt-4 text-center'>Welcome {id}-Student</h2>
-        {isCourseDetailsVisible && (
-          <div className="container mt-5">
-            <div className="card w-50">
-              <div className="card-title text-center display-5" style={{ backgroundColor: "rgb(202, 103, 2)" }}>
-                <h2>Course Details</h2>
-              </div>
-                <div className='card-body' style={{ backgroundColor: "aliceblue" }}>
-                <h4>Operating System-2209811PC</h4>
-                <h4>Software Engineering-2209831PE</h4>
-                <h4>Computer Organization-2208411PC</h4>
-                <h4>Data Analytics-2209811CS</h4>
-              </div>
+      
+      <div style={contentStyle}>
+        <h2 style={{ textAlign: 'center', marginBottom: '20px' }} className='mb-5'>Welcome {id}-Student</h2>
+        
+        {isCourseDetailsVisible && windowWidth > 768 && (
+          <div style={{ 
+            maxWidth: '500px', 
+            margin: '0 auto',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            borderRadius: '8px',
+            overflow: 'hidden'
+          }}>
+            <div style={{ 
+              backgroundColor: "rgb(202, 103, 2)",
+              padding: '15px',
+              textAlign: 'center',
+              color: 'white'
+            }}>
+              <h2 style={{ margin: 0 }}>Course Details</h2>
+            </div>
+            <div style={{ 
+              backgroundColor: "aliceblue",
+              padding: '20px'
+            }}>
+              {['Operating System-2209811PC', 'Software Engineering-2209831PE', 
+                'Computer Organization-2208411PC', 'Data Analytics-2209811CS'].map((course, index) => (
+                <h4 key={index} style={{ 
+                  margin: '10px 0',
+                  fontSize: windowWidth <= 1024 ? '16px' : '18px'
+                }}>{course}</h4>
+              ))}
             </div>
           </div>
         )}
-        <div className="content mt-4">
+        
+        <div style={{ marginTop: '20px' }}>
           <Outlet />
         </div>
       </div>

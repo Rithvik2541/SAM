@@ -3,30 +3,38 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-
-
 function StudentDetails() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
 
-  async function pageRendered(){
+  // Function to fetch students
+  async function pageRendered() {
     let res = await axios.get('https://studentattendancemanagement.onrender.com/admin-app/student-details');
-    if(res.data.message === 'deatils fetched')
-    setStudents(res.data.payload);
-    else{
-      console.log("error in fetching")
+    if (res.data.message === 'deatils fetched') {
+      setStudents(res.data.payload);
+    } else {
+      console.log('Error in fetching');
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     pageRendered();
-  },[])
+
+    // Add a listener for window resize
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call it once to set the initial state
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleViewDetails = (studentObj) => {
-    navigate('/admin-profile/student-page', {state : studentObj});
+    navigate('/admin-profile/student-page', { state: studentObj });
   };
-
-
 
   const handleRemoveStudent = async (id) => {
     try {
@@ -44,42 +52,45 @@ function StudentDetails() {
   };
 
   return (
-    <div className='d-block mx-auto'>
-      <h1 className='text-center mb-4'>Student Details</h1>
-      <table border="1" className='table p-4 w-75 ms-5'>
-        <thead className='text-center'>
-          <tr>
-            <th>Student ID</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody className='text-center'>
-          {students.map((student) => (
-            <tr key={student.userId}>
-              <td className='ms-4'>{student.userId}</td>
-              <td>{student.name}</td>
-              <td>
+    <div className="container mt-4">
+      <h1 className="text-center mb-4">Student Details</h1>
+
+      <div className="table-responsive">
+        <table className="table table-bordered table-hover">
+          <thead className="table-light text-center">
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {students.map((student) => (
+              <tr key={student.userId}>
+                <td>{student.userId}</td>
+                <td>{student.name}</td>
+                <td>
                 <button
                   
                   className='rounded btn-success p-1'
                   style={{ backgroundColor: "rgba(74, 208, 43, 0.556)" }}
                   onClick={() => handleViewDetails(student)}
                 >
-                  View Details
-                </button>
-                <button
+                    {isMobile ? 'View' : 'View Details'}
+                  </button>
+                  <button
                   style={{ backgroundColor: "rgba(255, 0, 0, 0.556)" }}
                   className='rounded btn-danger p-1 ms-2'
                   onClick={() => handleRemoveStudent(student.userId)}
                 >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    {isMobile ? 'Remove' : 'Remove Student'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

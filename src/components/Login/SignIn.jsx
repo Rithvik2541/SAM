@@ -27,10 +27,10 @@ function SignIn() {
     try {
       const res = await axios.post(
         data.userType === 'student'
-          ? 'https://studentattendancemanagement.onrender.com/student-app/login'
+          ? 'http://localhost:4000/student-app/login'
           : data.userType === 'teacher'
-          ? 'https://studentattendancemanagement.onrender.com/teacher-app/login'
-          : 'https://studentattendancemanagement.onrender.com/admin-app/login',
+          ? 'http://localhost:4000/teacher-app/login'
+          : 'http://localhost:4000/admin-app/login',
         data
       );
       if (res.data.message === 'login success') {
