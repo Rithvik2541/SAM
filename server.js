@@ -101,7 +101,10 @@ app.use(exp.static(path.join(__dirname, './build')));
 
 app.use(cors());
 
-const uri = 'mongodb+srv://vercel-admin-user:rz7WJZpDLLkuODhJ@edu-manager.ts3txyi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+// const uri = 'mongodb+srv://vercel-admin-user:rz7WJZpDLLkuODhJ@edu-manager.ts3txyi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://rithvikvarma2541:rithvik45@edu-manager.ts3txyi.mongodb.net/';
+
+
 
 // this is new git edit
 mc.connect(uri)
